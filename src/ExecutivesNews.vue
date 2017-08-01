@@ -16,88 +16,55 @@
 </template>
 
 <script>
-import NewsList from './NewsList.vue'
-import NewsDetail from './NewsDetail.vue'
-import Axios from 'axios'
-import Qs from 'qs'
+    import NewsList from './NewsList.vue'
+    import NewsDetail from './NewsDetail.vue'
+    import NewsService from './NewsService'
 
-export default {
-  data () {
-    return {
-      activeIndex:'1',
-      newsList:[],
-      newsDetail:{},
-    }
-  },
-  components:{
-    "news-list":NewsList,
-    "news-detail":NewsDetail
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-    },
-    newsSelected(id){
-        Axios.post('http://web7.umydata.com/API/NewsStockDetail',
-        Qs.stringify({
-        "id": id,
-        "filed[]": [
-          "name",
-          "symbol",
-          "link",
-          "releasedate",
-          "title",
-          "id",
-          "content"
-        ]
-      }),)
-      .then(response => { 
-          //console.log(response.data)
-          var news=response.data.list[0];
-          news.content=news.content.replace(/\r\n|\r|\n/g, ' <br>&nbsp; &nbsp;');
-          this.newsDetail=news;
-      })
-      .catch(e => {
-          console.log(e);
-      })
-    }
+    export default {
+        data() {
+            return {
+                activeIndex: '1',
+                newsList: [],
+                newsDetail: {},
+            }
+        },
+        components: {
+            "news-list": NewsList,
+            "news-detail": NewsDetail
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            newsSelected(id) {
+                NewsService.getNewsDetail(id)
+                    .then(response => {
+                        //console.log(response.data)
+                        var news = response.data.list[0];
+                        news.content = news.content.replace(/\r\n|\r|\n/g, ' <br>&nbsp; &nbsp;');
+                        this.newsDetail = news;
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    })
+            }
 
-  },
-  created:function() {              
-    Axios.post('http://web7.umydata.com/API/NewsStockList',
-        Qs.stringify({"symbol[]": "000027.sz",
-        "filed[]": [
-        "name",
-        "symbol",
-        "releasedate",
-        "title",
-        "id",
-        "source",
-        "content",
-        "researchdate",
-        "level",
-        "type",
-        "researcher"
-      ],
-      "querydate[StartDate]": "20160722",
-      "querydate[EndDate]": "20170722",
-      "calccount": "1",
-      "start": "0",
-      "end": "20",
-      "userid": "qiuyh2"
-    }),)
-    .then(response => { 
-        //console.log(response.data)
-        this.newsList=response.data.list
-        if(this.newsList.length>0){
-          this.newsSelected(this.newsList[0].id)
+        },
+        created: function () {
+            NewsService.getNewsList().then(
+                response => {
+                    //console.log(response.data)
+                    this.newsList = response.data.list
+                    if (this.newsList.length > 0) {
+                        this.newsSelected(this.newsList[0].id)
+                    }
+                }
+            ).catch(e => {
+                console.log(e);
+            })
+
         }
-    })
-    .catch(e => {
-        console.log(e);
-    })
-  }
-}
+    }
 </script>
 
 <style>

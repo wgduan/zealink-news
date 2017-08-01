@@ -2,9 +2,9 @@
     <div id='header'>
         <el-row>
             <el-col :span="24">
-                <el-menu theme="dark" class="el-menu-demo" mode="horizontal">
-                    <el-menu-item index="1"><router-link to="/ExecutivesNews">高管要闻</router-link></el-menu-item>
-                    <el-menu-item index="2"><router-link to="/InvestorRelations">投资者关系</router-link></el-menu-item>
+                <el-menu default-active="1" theme="dark" class="el-menu-demo" mode="horizontal">
+                    <router-link to="/ExecutivesNews"><el-menu-item index="1">高管要闻</el-menu-item></router-link>
+                    <router-link to="/InvestorRelations"><el-menu-item index="2">投资者关系</el-menu-item></router-link>
                     <el-menu-item index="3">互动易</el-menu-item>
                     <el-menu-item index="4">回复函</el-menu-item>
                     <el-menu-item index="5">负面新闻</el-menu-item>
