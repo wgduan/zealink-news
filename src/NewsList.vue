@@ -73,7 +73,7 @@ export default {
             this.$emit("newsSelected",id);
         },
         querySearch(queryString, cb){
-            cb([])
+            cb([1,2,3])
         },
         onFocus(){
             console.log("onFocus")
