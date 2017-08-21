@@ -13,7 +13,7 @@
             </el-col>
             <el-col :span="15">
                 <el-input v-model="input" placeholder="搜索新闻"></el-input>
-
+                <el-autocomplete-ex v-model="input" :fetch-suggestions="querySearch" @focus="onFocus" @blur="onBlur"></el-autocomplete-ex>
             </el-col>
             <el-col :span="3">
                 <el-button type="primary">搜索</el-button>
@@ -39,8 +39,13 @@
 </template>
 
 <script>
+
+import AutocompleteEx from './AutocompleteEx';
+
+
 export default {
     props: ["newsList","newsId"],
+    components:{"el-autocomplete-ex":AutocompleteEx},
     data () {
         return {
             options: [{
@@ -66,6 +71,15 @@ export default {
     methods:{
         selectNews(id){
             this.$emit("newsSelected",id);
+        },
+        querySearch(queryString, cb){
+            cb([])
+        },
+        onFocus(){
+            console.log("onFocus")
+        },
+        onBlur(){
+            console.log("onBlur")
         },
     },
 }
